@@ -44,6 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="Cliente.cs" />
+    <Compile Include="Prestamo.cs" />
+    <Compile Include="ArchivoService.cs" />
+    <Compile Include="NegocioService.cs" />
+    <Compile Include="ReporteService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

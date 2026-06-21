@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-
 
 namespace PagaDiarioCelendin
 {
@@ -14,6 +7,8 @@ namespace PagaDiarioCelendin
         static void Main(string[] args)
         {
             Console.Title = "Paga Diario - Celendín";
+
+            // Inicializamos la carga de datos
             ArchivoService.CargarDatos();
 
             int opcion = 0;
@@ -41,9 +36,10 @@ namespace PagaDiarioCelendin
                     case 3: NegocioService.ProcesarPrestamo(); break;
                     case 4: ReporteService.MostrarDatos(); break;
                     case 5: ReporteService.Simular50Registros(); break;
-                    case 6: 
+                    case 6:
                         ArchivoService.GuardarDatos();
                         Console.WriteLine("\n[OK] Datos respaldados. Saliendo...");
+                        System.Threading.Thread.Sleep(1000);
                         break;
                 }
             } while (opcion != 6);
