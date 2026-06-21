@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 
 
+
 namespace PagaDiarioCelendin
 {
     class Program
@@ -13,7 +14,7 @@ namespace PagaDiarioCelendin
         static void Main(string[] args)
         {
             Console.Title = "Paga Diario - Celendín";
-            ArchivoService.CargarDatos(); // Llama a tu clase de archivos
+            ArchivoService.CargarDatos();
 
             int opcion = 0;
             do
@@ -25,22 +26,27 @@ namespace PagaDiarioCelendin
                 Console.WriteLine("1. Registrar Cliente");
                 Console.WriteLine("2. Aperturar Ahorro");
                 Console.WriteLine("3. Registrar Prestamo");
-                Console.WriteLine("4. Mostrar Datos");
-                Console.WriteLine("5. Salir");
+                Console.WriteLine("4. Mostrar Datos (Reportes)");
+                Console.WriteLine("5. Simular 50 Registros (Evidencia)");
+                Console.WriteLine("6. Salir y Guardar");
                 Console.WriteLine("========================================");
-                Console.Write("Seleccione una opcion (1-5): ");
+                Console.Write("Seleccione una opcion (1-6): ");
 
                 if (!int.TryParse(Console.ReadLine(), out opcion)) continue;
 
                 switch (opcion)
                 {
-                    case 1: /* Se llamara a la clase de Alumno B */ break;
-                    case 2: /* Se llamara a la clase de Alumno B */ break;
-                    case 3: /* Se llamara a la clase de Alumno B */ break;
-                    case 4: /* Se llamara a la clase de Alumno C */ break;
-                    case 5: ArchivoService.GuardarDatos(); break;
+                    case 1: NegocioService.RegistrarCliente(); break;
+                    case 2: NegocioService.AperturarAhorro(); break;
+                    case 3: NegocioService.ProcesarPrestamo(); break;
+                    case 4: ReporteService.MostrarDatos(); break;
+                    case 5: ReporteService.Simular50Registros(); break;
+                    case 6: 
+                        ArchivoService.GuardarDatos();
+                        Console.WriteLine("\n[OK] Datos respaldados. Saliendo...");
+                        break;
                 }
-            } while (opcion != 5);
+            } while (opcion != 6);
         }
     }
 }
