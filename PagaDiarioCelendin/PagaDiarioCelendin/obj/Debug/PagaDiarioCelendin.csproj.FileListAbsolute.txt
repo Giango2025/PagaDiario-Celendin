@@ -5,3 +5,4 @@ D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiari
 D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\bin\Debug\PagaDiarioCelendin.pdb
 D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.exe
 D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.pdb
+D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.exe.config
