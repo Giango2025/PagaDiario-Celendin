@@ -11,6 +11,14 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ReporteService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\ArchivoService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ArchivoService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\NegocioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:NegocioService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -26,8 +34,38 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ArchivoService.cs",
+              "DocumentMoniker": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\ArchivoService.cs",
+              "RelativeDocumentMoniker": "ArchivoService.cs",
+              "ToolTip": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\ArchivoService.cs",
+              "RelativeToolTip": "ArchivoService.cs",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-22T02:09:30.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NegocioService.cs",
+              "DocumentMoniker": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\NegocioService.cs",
+              "RelativeDocumentMoniker": "NegocioService.cs",
+              "ToolTip": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\NegocioService.cs",
+              "RelativeToolTip": "NegocioService.cs",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAJwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-22T02:07:59.518Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -36,13 +74,14 @@
               "RelativeDocumentMoniker": "ReporteService.cs",
               "ToolTip": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\ReporteService.cs",
               "RelativeToolTip": "ReporteService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAABwAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-22T00:36:35.986Z"
+              "WhenOpened": "2026-06-22T00:36:35.986Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Prestamo.cs",
               "DocumentMoniker": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\Prestamo.cs",
               "RelativeDocumentMoniker": "Prestamo.cs",
@@ -67,15 +106,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "D:\\TERCER CICLO\\funnda\\PROGRAMA\\PagaDiario-Celendin\\PagaDiarioCelendin\\PagaDiarioCelendin\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAkwC8AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAkwC8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-21T23:25:14.723Z"
+              "WhenOpened": "2026-06-21T23:25:14.723Z",
+              "EditorCaption": ""
             }
           ]
         }
