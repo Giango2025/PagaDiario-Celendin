@@ -43,18 +43,18 @@ namespace PagaDiarioCelendin
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("========================================");
-                Console.WriteLine("  💰 CORE BANCARIO - PAGA DIARIO");
+                Console.WriteLine("   CORE BANCARIO - PAGA DIARIO");
                 Console.WriteLine("         CELENDÍN - CAJAMARCA");
                 Console.WriteLine("========================================");
                 Console.ResetColor();
 
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("1. 📝 Registrar Cliente");
-                Console.WriteLine("2. 🏦 Aperturar Ahorro");
-                Console.WriteLine("3. 📊 Registrar Préstamo");
-                Console.WriteLine("4. 📋 Mostrar Datos (Reportes)");
-                Console.WriteLine("5. 🧪 Simular 50 Registros (Evidencia)");
-                Console.WriteLine("6. 💾 Salir y Guardar");
+                Console.WriteLine("1.  Registrar Cliente");
+                Console.WriteLine("2.  Aperturar Ahorro");
+                Console.WriteLine("3.  Registrar Préstamo");
+                Console.WriteLine("4.  Mostrar Datos (Reportes)");
+                Console.WriteLine("5.  Simular 50 Registros (Evidencia)");
+                Console.WriteLine("6.  Salir y Guardar");
                 Console.WriteLine("========================================");
                 Console.ResetColor();
 
@@ -83,7 +83,7 @@ namespace PagaDiarioCelendin
                     case 6:
                         ArchivoService.GuardarDatos();
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("\n✅ Datos respaldados. Saliendo...");
+                        Console.WriteLine("\n Datos respaldados. Saliendo...");
                         Console.ResetColor();
                         System.Threading.Thread.Sleep(1000);
                         break;
