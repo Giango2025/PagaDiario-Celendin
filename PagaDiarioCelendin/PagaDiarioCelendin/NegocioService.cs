@@ -84,7 +84,7 @@ namespace PagaDiarioCelendin
             ArchivoService.ListaClientes.Add(nuevoCliente);
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n✅ Cliente registrado correctamente.");
+            Console.WriteLine($"\n Cliente registrado correctamente.");
             Console.WriteLine($"   DNI: {dni} | {nombres} {apellidos}");
             Console.ResetColor();
             Console.ReadKey();
@@ -119,7 +119,7 @@ namespace PagaDiarioCelendin
                 double saldo = monto + interes;
 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\n✅ Depósito: S/ {monto:F2}");
+                Console.WriteLine($"\n Depósito: S/ {monto:F2}");
                 Console.WriteLine($"   Interés (15%): S/ {interes:F2}");
                 Console.WriteLine($"   Saldo Final: S/ {saldo:F2}");
                 Console.ResetColor();
@@ -159,7 +159,7 @@ namespace PagaDiarioCelendin
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"✅ Cliente verificado: {clienteEncontrado.Nombres} {clienteEncontrado.Apellidos}");
+            Console.WriteLine($" Cliente verificado: {clienteEncontrado.Nombres} {clienteEncontrado.Apellidos}");
             Console.ResetColor();
 
             // Validación del capital
@@ -230,8 +230,8 @@ namespace PagaDiarioCelendin
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n✅ Total a pagar: S/ {totalRedondeado:F1}");
-            Console.WriteLine($"✅ Préstamo guardado con ID: {nuevoID}");
+            Console.WriteLine($"\n Total a pagar: S/ {totalRedondeado:F1}");
+            Console.WriteLine($" Préstamo guardado con ID: {nuevoID}");
             Console.ResetColor();
             Console.ReadKey();
         }
