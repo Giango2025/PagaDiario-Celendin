@@ -1,2 +1,7 @@
 D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.csproj.AssemblyReference.cache
 D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.csproj.CoreCompileInputs.cache
+D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\bin\Debug\PagaDiarioCelendin.exe.config
+D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\bin\Debug\PagaDiarioCelendin.exe
+D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\bin\Debug\PagaDiarioCelendin.pdb
+D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.exe
+D:\TERCER CICLO\funnda\PROGRAMA\PagaDiario-Celendin\PagaDiarioCelendin\PagaDiarioCelendin\obj\Debug\PagaDiarioCelendin.pdb
