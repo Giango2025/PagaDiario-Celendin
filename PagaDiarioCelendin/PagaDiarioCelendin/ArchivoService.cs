@@ -1,11 +1,3 @@
-// ================================================================
-// SERVICIO DE ARCHIVOS - Persistencia de datos en archivos
-// ================================================================
-// Este servicio maneja la carga y guardado de datos en archivos
-// de texto (.txt) y binarios (.bin) para garantizar la persistencia
-// de la información entre ejecuciones del programa.
-// ================================================================
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -13,260 +5,168 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PagaDiarioCelendin
 {
-    /// <summary>
-    /// Servicio estático para manejar la persistencia de datos.
-    /// Proporciona métodos para cargar y guardar clientes y préstamos
-    /// en archivos de texto y binarios.
-    /// </summary>
     public static class ArchivoService
     {
-        // ================================================================
         // DEFINICIÓN DE RUTAS DE ARCHIVOS
-        // ================================================================
-
-        // Archivos de texto (legibles por humanos)
         private static string archClientesTxt = "clientes.txt";
         private static string archPrestamosTxt = "prestamos.txt";
+        private static string archAhorrosTxt = "ahorros.txt"; // Nuevo
 
-        // Archivos binarios (eficientes y seguros)
         private static string archClientesBin = "clientes.bin";
         private static string archPrestamosBin = "prestamos.bin";
+        private static string archAhorrosBin = "ahorros.bin"; // Nuevo
 
-        // ================================================================
-        // LISTAS EN MEMORIA (Datos activos durante la ejecución)
-        // ================================================================
-
-        /// <summary>
-        /// Lista global de clientes registrados en el sistema.
-        /// </summary>
+        // LISTAS GLOBALES EN MEMORIA RAM
         public static List<Cliente> ListaClientes = new List<Cliente>();
-
-        /// <summary>
-        /// Lista global de préstamos registrados en el sistema.
-        /// </summary>
         public static List<Prestamo> ListaPrestamos = new List<Prestamo>();
+        public static List<Ahorro> ListaAhorros = new List<Ahorro>(); // Nuevo
 
-        // ================================================================
-        // MÉTODOS PARA ARCHIVOS DE TEXTO (.txt)
-        // ================================================================
-
-        /// <summary>
-        /// Carga los datos desde los archivos de texto (.txt).
-        /// Si los archivos no existen, no hace nada.
-        /// </summary>
-        public static void CargarDatosTexto()
-        {
-            // === Cargar clientes desde archivo de texto ===
-            if (File.Exists(archClientesTxt))
-            {
-                string[] lineas = File.ReadAllLines(archClientesTxt);
-                foreach (string linea in lineas)
-                {
-                    string[] partes = linea.Split('|');
-                    if (partes.Length == 4)
-                    {
-                        Cliente nuevoCliente = new Cliente(
-                            partes[0].Trim(),
-                            partes[1].Trim(),
-                            partes[2].Trim(),
-                            partes[3].Trim()
-                        );
-                        ListaClientes.Add(nuevoCliente);
-                    }
-                }
-                Console.WriteLine($"[INFO] {ListaClientes.Count} clientes cargados desde {archClientesTxt}.");
-            }
-
-            // === Cargar préstamos desde archivo de texto ===
-            if (File.Exists(archPrestamosTxt))
-            {
-                string[] lineas = File.ReadAllLines(archPrestamosTxt);
-                foreach (string linea in lineas)
-                {
-                    string[] partes = linea.Split('|');
-                    if (partes.Length == 6)
-                    {
-                        Prestamo nuevoPrestamo = new Prestamo(
-                            int.Parse(partes[0].Trim()),
-                            partes[1].Trim(),
-                            double.Parse(partes[2].Trim()),
-                            double.Parse(partes[3].Trim()),
-                            partes[4].Trim(),
-                            partes[5].Trim()
-                        );
-                        ListaPrestamos.Add(nuevoPrestamo);
-                    }
-                }
-                Console.WriteLine($"[INFO] {ListaPrestamos.Count} préstamos cargados desde {archPrestamosTxt}.");
-            }
-        }
-
-        /// <summary>
-        /// Guarda los datos en los archivos de texto (.txt).
-        /// Cada registro se guarda en una línea con campos separados por '|'.
-        /// </summary>
-        public static void GuardarDatosTexto()
-        {
-            // === Guardar clientes en archivo de texto ===
-            List<string> lineasClientes = new List<string>();
-            foreach (var c in ListaClientes)
-            {
-                lineasClientes.Add($"{c.DNI}|{c.Nombres}|{c.Apellidos}|{c.Telefono}");
-            }
-            File.WriteAllLines(archClientesTxt, lineasClientes);
-
-            // === Guardar préstamos en archivo de texto ===
-            List<string> lineasPrestamos = new List<string>();
-            foreach (var p in ListaPrestamos)
-            {
-                lineasPrestamos.Add($"{p.ID}|{p.DNICliente}|{p.Capital}|{p.Total}|{p.Garantia}|{p.URLFoto}");
-            }
-            File.WriteAllLines(archPrestamosTxt, lineasPrestamos);
-
-            Console.WriteLine($"[OK] Datos guardados en archivos de texto: {ListaClientes.Count} clientes, {ListaPrestamos.Count} préstamos.");
-        }
-
-        // ================================================================
-        // MÉTODOS PARA ARCHIVOS BINARIOS (.bin)
-        // ================================================================
-
-        /// <summary>
-        /// Guarda los datos en archivos binarios (.bin).
-        /// El formato binario es más eficiente y seguro que el texto.
-        /// </summary>
-        public static void GuardarDatosBinario()
+        // PERSISTENCIA EN FORMATO TEXTO (.TXT)
+        private static void GuardarDatosTexto()
         {
             try
             {
-                // === Guardar clientes en archivo binario ===
-                using (FileStream fs = new FileStream(archClientesBin, FileMode.Create))
-                using (BinaryWriter writer = new BinaryWriter(fs))
+                // Guardar Clientes
+                using (StreamWriter sw = new StreamWriter(archClientesTxt))
                 {
-                    // Escribir la cantidad de clientes
-                    writer.Write(ListaClientes.Count);
-
-                    // Escribir cada cliente
-                    foreach (var c in ListaClientes)
+                    foreach (Cliente c in ListaClientes)
                     {
-                        writer.Write(c.DNI);
-                        writer.Write(c.Nombres);
-                        writer.Write(c.Apellidos);
-                        writer.Write(c.Telefono);
+                        sw.WriteLine($"{c.DNI}|{c.Nombres}|{c.Apellidos}|{c.Telefono}");
                     }
                 }
 
-                // === Guardar préstamos en archivo binario ===
-                using (FileStream fs = new FileStream(archPrestamosBin, FileMode.Create))
-                using (BinaryWriter writer = new BinaryWriter(fs))
+                // Guardar Préstamos
+                using (StreamWriter sw = new StreamWriter(archPrestamosTxt))
                 {
-                    // Escribir la cantidad de préstamos
-                    writer.Write(ListaPrestamos.Count);
-
-                    // Escribir cada préstamo
-                    foreach (var p in ListaPrestamos)
+                    foreach (Prestamo p in ListaPrestamos)
                     {
-                        writer.Write(p.ID);
-                        writer.Write(p.DNICliente);
-                        writer.Write(p.Capital);
-                        writer.Write(p.Total);
-                        writer.Write(p.Garantia);
-                        writer.Write(p.URLFoto);
+                        sw.WriteLine($"{p.ID}|{p.DNICliente}|{p.Capital}|{p.Total}|{p.Garantia}|{p.URLFoto}");
                     }
                 }
 
-                Console.WriteLine($"[OK] Datos guardados en archivos binarios: {ListaClientes.Count} clientes, {ListaPrestamos.Count} préstamos.");
+                // Guardar Ahorros (Nuevo)
+                using (StreamWriter sw = new StreamWriter(archAhorrosTxt))
+                {
+                    foreach (Ahorro a in ListaAhorros)
+                    {
+                        sw.WriteLine($"{a.DNICliente}|{a.MontoInicial}|{a.InteresGanado}|{a.SaldoTotal}");
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Al guardar archivos binarios: {ex.Message}");
+                Console.WriteLine($"[ERROR] Al escribir archivos de texto: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Carga los datos desde los archivos binarios (.bin).
-        /// </summary>
-        public static void CargarDatosBinario()
+        private static void CargarDatosTexto()
         {
             try
             {
-                // === Cargar clientes desde archivo binario ===
+                // Cargar Clientes
+                if (File.Exists(archClientesTxt))
+                {
+                    ListaClientes.Clear();
+                    string[] lineas = File.ReadAllLines(archClientesTxt);
+                    foreach (string l in lineas)
+                    {
+                        string[] p = l.Split('|');
+                        if (p.Length == 4) ListaClientes.Add(new Cliente(p[0], p[1], p[2], p[3]));
+                    }
+                }
+
+                // Cargar Préstamos
+                if (File.Exists(archPrestamosTxt))
+                {
+                    ListaPrestamos.Clear();
+                    string[] lineas = File.ReadAllLines(archPrestamosTxt);
+                    foreach (string l in lineas)
+                    {
+                        string[] p = l.Split('|');
+                        if (p.Length == 6) ListaPrestamos.Add(new Prestamo(int.Parse(p[0]), p[1], double.Parse(p[2]), double.Parse(p[3]), p[4], p[5]));
+                    }
+                }
+
+                // Cargar Ahorros (Nuevo)
+                if (File.Exists(archAhorrosTxt))
+                {
+                    ListaAhorros.Clear();
+                    string[] lineas = File.ReadAllLines(archAhorrosTxt);
+                    foreach (string l in lineas)
+                    {
+                        string[] p = l.Split('|');
+                        if (p.Length == 4) ListaAhorros.Add(new Ahorro(p[0], double.Parse(p[1]), double.Parse(p[2]), double.Parse(p[3])));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Al leer archivos de texto: {ex.Message}");
+            }
+        }
+
+        // PERSISTENCIA EN FORMATO BINARIO (.BIN)
+        private static void GuardarDatosBinario()
+        {
+            try
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+
+                using (FileStream fs = new FileStream(archClientesBin, FileMode.Create)) bf.Serialize(fs, ListaClientes);
+                using (FileStream fs = new FileStream(archPrestamosBin, FileMode.Create)) bf.Serialize(fs, ListaPrestamos);
+                using (FileStream fs = new FileStream(archAhorrosBin, FileMode.Create)) bf.Serialize(fs, ListaAhorros); // Nuevo
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Al serializar datos binarios: {ex.Message}");
+            }
+        }
+
+        private static void CargarDatosBinario()
+        {
+            try
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+
                 if (File.Exists(archClientesBin))
                 {
-                    using (FileStream fs = new FileStream(archClientesBin, FileMode.Open))
-                    using (BinaryReader reader = new BinaryReader(fs))
-                    {
-                        int cantidad = reader.ReadInt32();
-                        for (int i = 0; i < cantidad; i++)
-                        {
-                            string dni = reader.ReadString();
-                            string nombres = reader.ReadString();
-                            string apellidos = reader.ReadString();
-                            string telefono = reader.ReadString();
-                            ListaClientes.Add(new Cliente(dni, nombres, apellidos, telefono));
-                        }
-                        Console.WriteLine($"[INFO] {cantidad} clientes cargados desde {archClientesBin}.");
-                    }
+                    using (FileStream fs = new FileStream(archClientesBin, FileMode.Open)) ListaClientes = (List<Cliente>)bf.Deserialize(fs);
                 }
-
-                // === Cargar préstamos desde archivo binario ===
                 if (File.Exists(archPrestamosBin))
                 {
-                    using (FileStream fs = new FileStream(archPrestamosBin, FileMode.Open))
-                    using (BinaryReader reader = new BinaryReader(fs))
-                    {
-                        int cantidad = reader.ReadInt32();
-                        for (int i = 0; i < cantidad; i++)
-                        {
-                            int id = reader.ReadInt32();
-                            string dni = reader.ReadString();
-                            double capital = reader.ReadDouble();
-                            double total = reader.ReadDouble();
-                            string garantia = reader.ReadString();
-                            string url = reader.ReadString();
-                            ListaPrestamos.Add(new Prestamo(id, dni, capital, total, garantia, url));
-                        }
-                        Console.WriteLine($"[INFO] {cantidad} préstamos cargados desde {archPrestamosBin}.");
-                    }
+                    using (FileStream fs = new FileStream(archPrestamosBin, FileMode.Open)) ListaPrestamos = (List<Prestamo>)bf.Deserialize(fs);
+                }
+                if (File.Exists(archAhorrosBin)) // Nuevo
+                {
+                    using (FileStream fs = new FileStream(archAhorrosBin, FileMode.Open)) ListaAhorros = (List<Ahorro>)bf.Deserialize(fs);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Al cargar archivos binarios: {ex.Message}");
+                Console.WriteLine($"[ERROR] Al deserializar datos binarios: {ex.Message}");
             }
         }
 
-        // ================================================================
-        // MÉTODOS PRINCIPALES (Unificados)
-        // ================================================================
-
-        /// <summary>
-        /// Carga los datos desde archivos. Prioriza binarios si existen.
-        /// </summary>
+        // CONTROLADORES UNIFICADOS
         public static void CargarDatos()
         {
-            // Primero intentar cargar desde binarios (más rápidos)
-            if (File.Exists(archClientesBin) && File.Exists(archPrestamosBin))
+            if (File.Exists(archClientesBin) && File.Exists(archPrestamosBin) && File.Exists(archAhorrosBin))
             {
                 CargarDatosBinario();
-                Console.WriteLine("[INFO] Datos cargados desde archivos binarios.");
+                Console.WriteLine("[INFO] Datos maestros y transaccionales cargados desde binarios.");
             }
             else
             {
                 CargarDatosTexto();
-                Console.WriteLine("[INFO] Datos cargados desde archivos de texto.");
+                Console.WriteLine("[INFO] Datos consolidados cargados desde archivos planos de texto.");
             }
         }
 
-        /// <summary>
-        /// Guarda los datos en archivos de texto y binarios simultáneamente.
-        /// </summary>
         public static void GuardarDatos()
         {
-            // Guardar en ambos formatos para mayor seguridad
             GuardarDatosTexto();
             GuardarDatosBinario();
-
-            Console.WriteLine("[OK] Datos guardados en ambos formatos (texto y binario).");
+            Console.WriteLine("[OK] Sincronización exitosa en almacenamiento dual (Texto y Binario).");
         }
     }
 }
