@@ -1,5 +1,7 @@
+using System;
 namespace PagaDiarioCelendin
 {
+    [Serializable]
     public class Prestamo
     {
         public int ID { get; set; }
