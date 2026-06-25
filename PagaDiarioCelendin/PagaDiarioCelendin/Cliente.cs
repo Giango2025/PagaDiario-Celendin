@@ -1,5 +1,7 @@
+using System;
 namespace PagaDiarioCelendin
 {
+    [Serializable]
     public class Cliente
     {
         // Atributos de la clase
