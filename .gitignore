@@ -1,0 +1,15 @@
+# Archivos de Visual Studio
+.vs/
+bin/
+obj/
+*.exe
+*.pdb
+*.user
+*.suo
+*.cache
+*.tmp
+*.log
+*.txt
+*.bin
+CopilotIndices/
+FileContentIndex/
