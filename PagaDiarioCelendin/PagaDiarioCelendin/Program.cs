@@ -1,114 +1,84 @@
-﻿// ================================================================
-// PROGRAMA PRINCIPAL - PAGA DIARIO CELENDÍN
-// ================================================================
-// Sistema de gestión financiera para microcréditos y ahorros
-// Desarrollado para la financiera "Paga Diario" en Celendín, Cajamarca.
-// ================================================================
-
-using System;
+﻿using System;
 
 namespace PagaDiarioCelendin
 {
     class Program
     {
-        /// <summary>
-        /// Punto de entrada del programa.
-        /// Inicializa los datos, muestra el menú principal y gestiona
-        /// el flujo de la aplicación de manera estructurada.
-        /// </summary>
         static void Main(string[] args)
         {
-            // Configuración estética de la consola
-            Console.Title = "Paga Diario - Celendín (Core Bancario v2.0)";
-
-            // ================================================================
-            // INICIALIZACIÓN DE DATOS (Persistencia Avanzada)
-            // ================================================================
+            Console.Title = "Paga Diario - Celendin";
             ArchivoService.CargarDatos();
-            System.Threading.Thread.Sleep(1500);
 
             int opcion = 0;
-
             do
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("==================================================");
-                Console.WriteLine("    SISTEMA DE GESTIÓN FINANCIERA 'PAGA DIARIO'   ");
-                Console.WriteLine("               CELENDÍN - CAJAMARCA               ");
+                Console.WriteLine("    SISTEMA DE GESTION FINANCIERA 'PAGA DIARIO'   ");
+                Console.WriteLine("               CELENDIN - CAJAMARCA               ");
                 Console.WriteLine("==================================================");
                 Console.ResetColor();
 
                 Console.WriteLine(" 1. Registrar Nuevo Cliente");
-                Console.WriteLine(" 2. Aperturar Cuenta de Ahorros (Monto Fijo)");
-                Console.WriteLine(" 3. Procesar y Otorgar Préstamo (15% Interés)");
-                Console.WriteLine(" 4. Ver Reportes Generales (Clientes, Créditos y Ahorros)");
-                Console.WriteLine(" 5. Ejecutar Simulador Masivo (Inyección de 100 Registros)");
-                Console.WriteLine(" 6. Sincronizar Almacenamiento Dual y Salir");
+                Console.WriteLine(" 2. Aperturar Cuenta de Ahorros");
+                Console.WriteLine(" 3. Otorgar Prestamo (15% Interes)");
+                Console.WriteLine(" 4. Registrar Pago Diario");
+                Console.WriteLine(" 5. Ver Reporte General");
+                Console.WriteLine(" 6. Clientes con Ahorro");
+                Console.WriteLine(" 7. Clientes con Credito");
+                Console.WriteLine(" 8. Clientes con Ambos");
+                Console.WriteLine(" 9. Estadisticas Financieras");
+                Console.WriteLine("10. Simular 100 Registros (Prueba)");
+                Console.WriteLine("11. Salir");
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("==================================================");
                 Console.ResetColor();
-                Console.Write("Seleccione una opción del menú (1-6): ");
 
-                // Validación avanzada de entrada de menú para evitar caídas por excepciones
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("En cualquier momento, escriba 'REGRESAR' para");
+                Console.WriteLine("cancelar la operacion y volver al menu principal.");
+                Console.ResetColor();
+
+                Console.Write("\nSeleccione una opcion (1-11): ");
+
                 if (!int.TryParse(Console.ReadLine(), out opcion))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\n[ERROR] Por favor, ingrese un número válido entre 1 y 6.");
+                    Console.WriteLine("ERROR: Ingrese un numero valido.");
                     Console.ResetColor();
                     System.Threading.Thread.Sleep(1500);
                     continue;
                 }
 
-                // ================================================================
-                // ENRUTADOR DE OPERACIONES (Reglas de Negocio y Reportes)
-                // ================================================================
                 switch (opcion)
                 {
-                    case 1:
-                        // Llama al registro de Clientes con validaciones
-                        NegocioService.RegistrarCliente();
-                        break;
-                    case 2:
-                        // Llama al método persistente y validado de Ahorros
-                        NegocioService.AperturarAhorro();
-                        break;
-                    case 3:
-                        // Llama al generador de cronogramas y créditos
-                        NegocioService.ProcesarPrestamo();
-                        break;
-                    case 4:
-                        // Muestra las tres colecciones unificadas
-                        ReporteService.MostrarDatos();
-                        break;
-                    case 5:
-                        // Llama al inyector de estrés escalado a 100 registros
-                        ReporteService.Simular50Registros();
-                        break;
-                    case 6:
-                        Console.Clear();
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Iniciando proceso de cierre seguro...");
-                        Console.ResetColor();
-
-                        // Sincroniza las listas de RAM en archivos planos (.txt) y serializados (.bin)
+                    case 1: NegocioService.RegistrarCliente(); break;
+                    case 2: NegocioService.AperturarAhorro(); break;
+                    case 3: NegocioService.ProcesarPrestamo(); break;
+                    case 4: NegocioService.RegistrarPagoDiario(); break;
+                    case 5: ReporteService.MostrarDatos(); break;
+                    case 6: ReporteService.MostrarClientesAhorro(); break;
+                    case 7: ReporteService.MostrarClientesCredito(); break;
+                    case 8: ReporteService.MostrarClientesAmbos(); break;
+                    case 9: ReporteService.MostrarEstadisticas(); break;
+                    case 10: ReporteService.Simular100Registros(); break;
+                    case 11:
                         ArchivoService.GuardarDatos();
-
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("\n[ÉXITO] Datos respaldados correctamente. Saliendo de la aplicación.");
+                        Console.WriteLine("\n*** Datos guardados. Hasta luego. ***");
                         Console.ResetColor();
-                        System.Threading.Thread.Sleep(1500);
                         break;
                     default:
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\n[ERROR] Opción fuera de rango. Seleccione de 1 a 6.");
+                        Console.WriteLine("ERROR: Opcion invalida.");
                         Console.ResetColor();
                         System.Threading.Thread.Sleep(1500);
                         break;
                 }
 
-            } while (opcion != 6);
+            } while (opcion != 11);
         }
     }
 }

@@ -1,19 +1,25 @@
 using System;
+
 namespace PagaDiarioCelendin
 {
     [Serializable]
     public class Cliente
     {
-        // Atributos de la clase
         public string DNI { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
         public string Telefono { get; set; }
+        public bool TieneAhorro { get; set; }
+        public bool TienePrestamo { get; set; }
 
-        // Constructor
         public Cliente(string dni, string nombres, string apellidos, string telefono)
         {
-            DNI = dni; Nombres = nombres; Apellidos = apellidos; Telefono = telefono;
+            DNI = dni;
+            Nombres = nombres;
+            Apellidos = apellidos;
+            Telefono = telefono;
+            TieneAhorro = false;
+            TienePrestamo = false;
         }
     }
 }

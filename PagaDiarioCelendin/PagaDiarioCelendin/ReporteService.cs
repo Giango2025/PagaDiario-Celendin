@@ -4,94 +4,172 @@ namespace PagaDiarioCelendin
 {
     public static class ReporteService
     {
-        // EXPOSITOR VISUAL DE REPORTES
         public static void MostrarDatos()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("--- REPORTE GENERAL ---");
+            Console.ResetColor();
 
-            // 1. Mostrar Clientes
-            Console.WriteLine($"===== MAESTRO DE CLIENTES ({ArchivoService.ListaClientes.Count}) =====");
-            if (ArchivoService.ListaClientes.Count == 0) Console.WriteLine("Colección vacía.");
-            else
-            {
-                foreach (Cliente c in ArchivoService.ListaClientes)
-                {
-                    Console.WriteLine($"DNI: {c.DNI} | {c.Nombres} {c.Apellidos} | Tel: {c.Telefono}");
-                }
-            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n*** CLIENTES ({ArchivoService.ListaClientes.Count}) ***");
+            Console.ResetColor();
+            foreach (var c in ArchivoService.ListaClientes)
+                Console.WriteLine($"  {c.DNI} | {c.Nombres} {c.Apellidos} | Tel: {c.Telefono} | Ahorro: {(c.TieneAhorro ? "SI" : "NO")} | Credito: {(c.TienePrestamo ? "SI" : "NO")}");
 
-            // 2. Mostrar Préstamos
-            Console.WriteLine($"\n===== CARTERA DE PRÉSTAMOS OTORGADOS ({ArchivoService.ListaPrestamos.Count}) =====");
-            if (ArchivoService.ListaPrestamos.Count == 0) Console.WriteLine("Colección vacía.");
-            else
-            {
-                foreach (Prestamo p in ArchivoService.ListaPrestamos)
-                {
-                    Console.WriteLine($"ID: {p.ID} | DNI Ref: {p.DNICliente} | Capital: S/ {p.Capital} | Total: S/ {p.Total}");
-                }
-            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n*** PRESTAMOS ACTIVOS ({ArchivoService.ListaPrestamos.Count}) ***");
+            Console.ResetColor();
+            foreach (var p in ArchivoService.ListaPrestamos)
+                Console.WriteLine($"  ID: {p.ID} | Cliente: {p.DNICliente} | Capital: S/ {p.Capital:F1} | Saldo: S/ {p.SaldoPendiente:F1} | Pagadas: {p.CuotasPagadas}/30");
 
-            // 3. Mostrar Ahorros (Nuevo)
-            Console.WriteLine($"\n===== PORTAFOLIO DE CUENTAS DE AHORRO ({ArchivoService.ListaAhorros.Count}) =====");
-            if (ArchivoService.ListaAhorros.Count == 0) Console.WriteLine("Colección vacía.");
-            else
-            {
-                foreach (Ahorro a in ArchivoService.ListaAhorros)
-                {
-                    Console.WriteLine($"Cliente DNI: {a.DNICliente} | Capitalizado: S/ {a.MontoInicial} | Rendimiento: S/ {a.InteresGanado} | Saldo: S/ {a.SaldoTotal}");
-                }
-            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n*** AHORROS ({ArchivoService.ListaAhorros.Count}) ***");
+            Console.ResetColor();
+            foreach (var a in ArchivoService.ListaAhorros)
+                Console.WriteLine($"  Cliente: {a.DNICliente} | Saldo base: S/ {a.SaldoBase:F2} | Plan: S/ {a.Plan}.00 | Saldo total: S/ {a.SaldoTotal:F2} | Interes mensual: S/ {a.InteresMensual:F2} | Interes anual: S/ {a.InteresAnual:F2} | Vence: {a.FechaVencimiento:dd/MM/yyyy}");
 
-            Console.WriteLine("\nPresione cualquier tecla para regresar al menú principal...");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\n*** PAGOS REGISTRADOS ({ArchivoService.ListaPagos.Count}) ***");
+            Console.ResetColor();
+            foreach (var p in ArchivoService.ListaPagos)
+                Console.WriteLine($"  Cliente: {p.DNICliente} | Prestamo ID: {p.PrestamoID} | Monto: S/ {p.MontoPagado:F1} | Cuota #{p.NumeroCuota}");
+
+            Console.WriteLine("\nPresione cualquier tecla para volver al menu...");
             Console.ReadKey();
         }
 
-        // MOTOR DE SIMULACIÓN AVANZADA (Actualizado a 100 registros cruzados)
-        public static void Simular50Registros()
+        public static void MostrarClientesAhorro()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("--- CLIENTES CON AHORRO ---");
+            Console.ResetColor();
+            int count = 0;
+            foreach (var c in ArchivoService.ListaClientes)
+                if (c.TieneAhorro)
+                {
+                    Console.WriteLine($"  {c.DNI} | {c.Nombres} {c.Apellidos}");
+                    count++;
+                }
+            Console.WriteLine($"\nTotal: {count} clientes con ahorro.");
+            Console.WriteLine("\nPresione cualquier tecla para volver al menu...");
+            Console.ReadKey();
+        }
+
+        public static void MostrarClientesCredito()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("--- CLIENTES CON CREDITO ACTIVO ---");
+            Console.ResetColor();
+            int count = 0;
+            foreach (var c in ArchivoService.ListaClientes)
+                if (c.TienePrestamo)
+                {
+                    Console.WriteLine($"  {c.DNI} | {c.Nombres} {c.Apellidos}");
+                    count++;
+                }
+            Console.WriteLine($"\nTotal: {count} clientes con credito activo.");
+            Console.WriteLine("\nPresione cualquier tecla para volver al menu...");
+            Console.ReadKey();
+        }
+
+        public static void MostrarClientesAmbos()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("--- CLIENTES CON AHORRO Y CREDITO ---");
+            Console.ResetColor();
+            int count = 0;
+            foreach (var c in ArchivoService.ListaClientes)
+                if (c.TieneAhorro && c.TienePrestamo)
+                {
+                    Console.WriteLine($"  {c.DNI} | {c.Nombres} {c.Apellidos}");
+                    count++;
+                }
+            Console.WriteLine($"\nTotal: {count} clientes en ambos servicios.");
+            Console.WriteLine("\nPresione cualquier tecla para volver al menu...");
+            Console.ReadKey();
+        }
+
+        public static void MostrarEstadisticas()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("=== INICIANDO MOTOR DE PRUEBAS DE ESTRÉS MASIVO ===");
-            Console.WriteLine("Generando e indexando 100 registros relacionales en paralelo...");
+            Console.WriteLine("--- ESTADISTICAS FINANCIERAS ---");
+            Console.ResetColor();
+
+            int totalClientes = ArchivoService.ListaClientes.Count;
+            int conAhorro = 0, conPrestamo = 0, ambos = 0;
+            double totalAhorros = 0, totalPrestamos = 0, totalPagado = 0;
+
+            foreach (var c in ArchivoService.ListaClientes)
+            {
+                if (c.TieneAhorro) conAhorro++;
+                if (c.TienePrestamo) conPrestamo++;
+                if (c.TieneAhorro && c.TienePrestamo) ambos++;
+            }
+
+            foreach (var a in ArchivoService.ListaAhorros) totalAhorros += a.SaldoTotal;
+            foreach (var p in ArchivoService.ListaPrestamos) totalPrestamos += p.SaldoPendiente;
+            foreach (var p in ArchivoService.ListaPagos) totalPagado += p.MontoPagado;
+
+            Console.WriteLine($"\n*** CLIENTES: {totalClientes}");
+            Console.WriteLine($"  - Con Ahorro: {conAhorro}");
+            Console.WriteLine($"  - Con Credito: {conPrestamo}");
+            Console.WriteLine($"  - Con Ambos: {ambos}");
+            Console.WriteLine($"\n*** TOTAL AHORROS: S/ {totalAhorros:F2}");
+            Console.WriteLine($"*** TOTAL PRESTAMOS PENDIENTES: S/ {totalPrestamos:F2}");
+            Console.WriteLine($"*** TOTAL PAGADO: S/ {totalPagado:F2}");
+
+            Console.WriteLine("\nPresione cualquier tecla para volver al menu...");
+            Console.ReadKey();
+        }
+
+        public static void Simular100Registros()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("--- SIMULADOR MASIVO (100 REGISTROS) ---");
             Console.ResetColor();
 
             Random rnd = new Random();
-
-            // Limpieza transaccional previa para evitar colisiones de redundancia
             ArchivoService.ListaClientes.Clear();
             ArchivoService.ListaPrestamos.Clear();
             ArchivoService.ListaAhorros.Clear();
+            ArchivoService.ListaPagos.Clear();
 
-            for (int i = 1; i <= 100; i++) // Escalado a 100 para sobrepasar el mínimo (>=50)
+            int[] planes = { 20, 30, 40, 50 };
+
+            for (int i = 1; i <= 100; i++)
             {
-                string dniFalso = (10000000 + i).ToString();
+                string dni = (10000000 + i).ToString();
+                var cliente = new Cliente(dni, $"Cliente_{i}", "Apellido", "9" + (100000000 + i).ToString().Substring(1, 8));
+                ArchivoService.ListaClientes.Add(cliente);
 
-                // 1. Inyección de Clientes
-                Cliente nuevoC = new Cliente(dniFalso, $"Asesorado_{i}", "Celendín", "9" + (100000000 + i).ToString().Substring(1, 8));
-                ArchivoService.ListaClientes.Add(nuevoC);
-
-                // 2. Inyección de Créditos vinculados
-                int idPrestamo = 1000 + i;
-                double capitalAleatorio = rnd.Next(200, 4500);
-                double totalCalculado = Math.Round(capitalAleatorio * 1.15, 1);
-                Prestamo nuevoP = new Prestamo(idPrestamo, dniFalso, capitalAleatorio, totalCalculado, $"Prenda Tipo Electrónico #{i}", $"http://cloudfinanciera.pe/garantias/img_{i}.png");
-                ArchivoService.ListaPrestamos.Add(nuevoP);
-
-                // 3. Inyección de Ahorros vinculados (Nuevo)
-                double[] montosDisponibles = { 20, 30, 40, 50 };
-                double montoAhorro = montosDisponibles[rnd.Next(0, montosDisponibles.Length)];
-                double interesCalculado = Math.Round(montoAhorro * 0.02, 2);
-                Ahorro nuevoA = new Ahorro(dniFalso, montoAhorro, interesCalculado, montoAhorro + interesCalculado);
-                ArchivoService.ListaAhorros.Add(nuevoA);
+                if (i % 2 == 0)
+                {
+                    int plan = planes[rnd.Next(0, planes.Length)];
+                    var ahorro = new Ahorro(dni, plan);
+                    ArchivoService.ListaAhorros.Add(ahorro);
+                    cliente.TieneAhorro = true;
+                }
+                else
+                {
+                    double capital = rnd.Next(200, 4500);
+                    double total = Math.Round(capital * 1.15, 1);
+                    var prestamo = new Prestamo(1000 + i, dni, capital, total, "Garantia", "http://foto.com");
+                    ArchivoService.ListaPrestamos.Add(prestamo);
+                    cliente.TienePrestamo = true;
+                }
             }
 
-            // Forzar guardado inmediato en disco duro (Formato dual plano y binario)
             ArchivoService.GuardarDatos();
-
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n[ÉXITO] 100 registros maestros y transaccionales creados con integridad relacional.");
-            Console.WriteLine("Los archivos binarios (.bin) y planos (.txt) fueron actualizados correctamente.");
+            Console.WriteLine("*** 100 registros simulados creados exitosamente. ***");
             Console.ResetColor();
+            Console.WriteLine("\nPresione cualquier tecla para volver al menu...");
             Console.ReadKey();
         }
     }
