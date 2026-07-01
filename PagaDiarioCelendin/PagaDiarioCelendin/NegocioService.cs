@@ -3,9 +3,6 @@ using System.Linq;
 
 namespace PagaDiarioCelendin
 {
-    /// <summary>
-    /// Servicio que contiene la lógica de negocio principal del sistema.
-    /// </summary>
     public static class NegocioService
     {
         // ========== REGISTRAR CLIENTE ==========
@@ -16,7 +13,6 @@ namespace PagaDiarioCelendin
             Console.WriteLine("(Escriba 'REGRESAR' en cualquier momento para cancelar)");
             Console.WriteLine();
 
-            // DNI
             string dni = "";
             while (true)
             {
@@ -38,7 +34,6 @@ namespace PagaDiarioCelendin
                 }
             }
 
-            // Nombres
             string nombres = "";
             while (true)
             {
@@ -49,7 +44,6 @@ namespace PagaDiarioCelendin
                 Utils.MostrarError(Constantes.MSJ_ERROR_NOMBRES);
             }
 
-            // Apellidos
             string apellidos = "";
             while (true)
             {
@@ -60,7 +54,6 @@ namespace PagaDiarioCelendin
                 Utils.MostrarError(Constantes.MSJ_ERROR_NOMBRES);
             }
 
-            // Teléfono
             string telefono = "";
             while (true)
             {
@@ -79,7 +72,7 @@ namespace PagaDiarioCelendin
             Utils.EsperarTecla();
         }
 
-        // ========== APERTURAR AHORRO ==========
+        // ========== APERTURAR AHORRO (CORREGIDO) ==========
         public static void AperturarAhorro()
         {
             Console.Clear();
@@ -108,15 +101,17 @@ namespace PagaDiarioCelendin
             Console.WriteLine($"Cliente: {cliente.Nombres} {cliente.Apellidos}");
             Console.WriteLine("\n--- PLANES DE AHORRO DISPONIBLES ---");
             Console.ForegroundColor = ConsoleColor.Yellow;
-            foreach (int plan in Constantes.PLANES_AHORRO)
-                Console.WriteLine($"  Plan {plan}: Depósito adicional de S/ {plan}.00");
+            foreach (int p in Constantes.PLANES_AHORRO)
+                Console.WriteLine($"  Plan {p}: Depósito adicional de S/ {p}.00");
             Console.ResetColor();
             Console.WriteLine($"NOTA: La cuenta se apertura con S/ {Constantes.SALDO_BASE_AHORRO:F2} (fijo) + plan elegido.");
             Console.WriteLine();
 
             string planInput = Utils.LeerConRegreso("Elija un plan (20, 30, 40, 50): ");
             if (planInput == Constantes.MSJ_REGRESAR) return;
-            if (!int.TryParse(planInput, out int plan) || !Utils.ValidarPlanAhorro(plan))
+
+            // *** CORRECCIÓN: Cambiamos el nombre de la variable para evitar conflicto ***
+            if (!int.TryParse(planInput, out int planElegido) || !Utils.ValidarPlanAhorro(planElegido))
             {
                 Utils.MostrarError("Plan inválido. Debe ser 20, 30, 40 o 50.");
                 Utils.EsperarTecla();
@@ -127,8 +122,8 @@ namespace PagaDiarioCelendin
             Console.WriteLine("\n--- CONDICIONES ESTRICTAS DE AHORRO ---");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"* Saldo de apertura: S/ {Constantes.SALDO_BASE_AHORRO:F2} (fijo)");
-            Console.WriteLine($"* Plan elegido: S/ {plan}.00");
-            Console.WriteLine($"* Saldo total inicial: S/ {Constantes.SALDO_BASE_AHORRO + plan:F2}");
+            Console.WriteLine($"* Plan elegido: S/ {planElegido}.00");
+            Console.WriteLine($"* Saldo total inicial: S/ {Constantes.SALDO_BASE_AHORRO + planElegido:F2}");
             Console.WriteLine($"* Tasa de interés anual: {Constantes.TASA_INTERES_AHORRO_ANUAL * 100}% (sobre el saldo total)");
             Console.WriteLine($"* Tasa de interés mensual: {Constantes.TASA_INTERES_AHORRO_MENSUAL * 100}%");
             Console.WriteLine($"* Plazo: 1 año (vencimiento: {DateTime.Now.AddYears(1):dd/MM/yyyy})");
@@ -146,7 +141,8 @@ namespace PagaDiarioCelendin
                 return;
             }
 
-            var ahorro = new Ahorro(dni, plan);
+            // Crear ahorro con el plan elegido
+            var ahorro = new Ahorro(dni, planElegido);
             ArchivoService.ListaAhorros.Add(ahorro);
             cliente.TieneAhorro = true;
             ArchivoService.GuardarDatos();
@@ -156,8 +152,8 @@ namespace PagaDiarioCelendin
             Console.WriteLine($"   Saldo base: S/ {ahorro.SaldoBase:F2}");
             Console.WriteLine($"   Plan elegido: S/ {ahorro.Plan}.00");
             Console.WriteLine($"   Saldo total inicial: S/ {ahorro.SaldoTotal:F2}");
-            Console.WriteLine($"   Interés mensual ({Constantes.TASA_INTERES_AHORRO_MENSUAL * 100}%): S/ {ahorro.InteresMensual:F2}");
-            Console.WriteLine($"   Interés anual ({Constantes.TASA_INTERES_AHORRO_ANUAL * 100}%): S/ {ahorro.InteresAnual:F2}");
+            Console.WriteLine($"   Interés mensual: S/ {ahorro.InteresMensual:F2}");
+            Console.WriteLine($"   Interés anual: S/ {ahorro.InteresAnual:F2}");
             Console.WriteLine($"   Fecha de vencimiento: {ahorro.FechaVencimiento:dd/MM/yyyy}");
             Console.ResetColor();
             Utils.EsperarTecla();
