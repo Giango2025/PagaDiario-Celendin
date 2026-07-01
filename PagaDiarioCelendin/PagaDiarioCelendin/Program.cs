@@ -2,6 +2,9 @@
 
 namespace PagaDiarioCelendin
 {
+    /// <summary>
+    /// Programa principal del sistema Paga Diario.
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
@@ -29,8 +32,8 @@ namespace PagaDiarioCelendin
                 Console.WriteLine(" 7. Clientes con Crédito");
                 Console.WriteLine(" 8. Clientes con Ambos");
                 Console.WriteLine(" 9. Estadísticas Financieras");
-                Console.WriteLine("10. Simular 100 Registros (Prueba)");
-                Console.WriteLine("11. Buscar Cliente por Nombre");  // Nueva
+                Console.WriteLine("10. Buscar Cliente por Nombre"); // NUEVA OPCIÓN
+                Console.WriteLine("11. Simular 100 Registros (Prueba)");
                 Console.WriteLine("12. Salir");
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -62,8 +65,8 @@ namespace PagaDiarioCelendin
                     case 7: ReporteService.MostrarClientesCredito(); break;
                     case 8: ReporteService.MostrarClientesAmbos(); break;
                     case 9: ReporteService.MostrarEstadisticas(); break;
-                    case 10: ReporteService.Simular100Registros(); break;
-                    case 11: NegocioService.BuscarClientePorNombre(); break;
+                    case 10: NegocioService.BuscarClientePorNombre(); break; // NUEVA OPCIÓN
+                    case 11: ReporteService.Simular100Registros(); break;
                     case 12:
                         ArchivoService.GuardarDatos();
                         Utils.MostrarExito("Datos guardados. Hasta luego.");

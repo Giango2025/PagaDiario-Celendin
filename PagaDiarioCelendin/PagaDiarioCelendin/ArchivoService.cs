@@ -5,6 +5,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PagaDiarioCelendin
 {
+    /// <summary>
+    /// Servicio que maneja la persistencia de datos en archivos de texto y binarios.
+    /// </summary>
     public static class ArchivoService
     {
         private static readonly string archClientesTxt = "clientes.txt";
@@ -17,15 +20,17 @@ namespace PagaDiarioCelendin
         private static readonly string archAhorrosBin = "ahorros.bin";
         private static readonly string archPagosBin = "pagos.bin";
 
-        public static List<Cliente> ListaClientes = new List<Cliente>();
-        public static List<Prestamo> ListaPrestamos = new List<Prestamo>();
-        public static List<Ahorro> ListaAhorros = new List<Ahorro>();
-        public static List<PagoDiario> ListaPagos = new List<PagoDiario>();
+        public static List<Cliente> ListaClientes { get; private set; } = new List<Cliente>();
+        public static List<Prestamo> ListaPrestamos { get; private set; } = new List<Prestamo>();
+        public static List<Ahorro> ListaAhorros { get; private set; } = new List<Ahorro>();
+        public static List<PagoDiario> ListaPagos { get; private set; } = new List<PagoDiario>();
 
+        /// <summary>Guarda los datos en ambos formatos (texto y binario).</summary>
         public static void GuardarDatos()
         {
             GuardarTexto();
             GuardarBinario();
+            Utils.MostrarInfo("Datos guardados en formato dual (texto y binario).");
         }
 
         private static void GuardarTexto()
@@ -48,9 +53,17 @@ namespace PagaDiarioCelendin
                     foreach (var p in ListaPagos)
                         sw.WriteLine($"{p.DNICliente}|{p.PrestamoID}|{p.MontoPagado}|{p.FechaPago}|{p.NumeroCuota}");
             }
+            catch (IOException ex)
+            {
+                Utils.MostrarError($"Error al guardar archivos de texto: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Utils.MostrarError($"Sin permisos para guardar archivos: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Guardado texto: {ex.Message}");
+                Utils.MostrarError($"Error inesperado al guardar texto: {ex.Message}");
             }
         }
 
@@ -64,24 +77,33 @@ namespace PagaDiarioCelendin
                 using (var fs = new FileStream(archAhorrosBin, FileMode.Create)) bf.Serialize(fs, ListaAhorros);
                 using (var fs = new FileStream(archPagosBin, FileMode.Create)) bf.Serialize(fs, ListaPagos);
             }
+            catch (IOException ex)
+            {
+                Utils.MostrarError($"Error al guardar archivos binarios: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Utils.MostrarError($"Sin permisos para guardar binarios: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Guardado binario: {ex.Message}");
+                Utils.MostrarError($"Error inesperado al guardar binario: {ex.Message}");
             }
         }
 
+        /// <summary>Carga los datos desde archivos (prioriza binarios si existen).</summary>
         public static void CargarDatos()
         {
             if (File.Exists(archClientesBin) && File.Exists(archPrestamosBin) &&
                 File.Exists(archAhorrosBin) && File.Exists(archPagosBin))
             {
                 CargarBinario();
-                Console.WriteLine("[INFO] Datos cargados desde binarios.");
+                Utils.MostrarInfo("Datos cargados desde archivos binarios.");
             }
             else
             {
                 CargarTexto();
-                Console.WriteLine("[INFO] Datos cargados desde texto.");
+                Utils.MostrarInfo("Datos cargados desde archivos de texto.");
             }
         }
 
@@ -158,9 +180,17 @@ namespace PagaDiarioCelendin
                     }
                 }
             }
+            catch (FileNotFoundException ex)
+            {
+                Utils.MostrarInfo($"Archivo no encontrado (primera ejecución): {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Utils.MostrarError($"Error al leer archivos de texto: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Carga texto: {ex.Message}");
+                Utils.MostrarError($"Error inesperado al cargar texto: {ex.Message}");
             }
         }
 
@@ -182,9 +212,17 @@ namespace PagaDiarioCelendin
                     using (var fs = new FileStream(archPagosBin, FileMode.Open))
                         ListaPagos = (List<PagoDiario>)bf.Deserialize(fs);
             }
+            catch (FileNotFoundException ex)
+            {
+                Utils.MostrarInfo($"Archivo binario no encontrado: {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Utils.MostrarError($"Error al leer archivos binarios: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Carga binaria: {ex.Message}");
+                Utils.MostrarError($"Error inesperado al cargar binario: {ex.Message}");
             }
         }
     }

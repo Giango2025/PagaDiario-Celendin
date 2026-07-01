@@ -3,31 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace PagaDiarioCelendin
 {
+    /// <summary>
+    /// Clase est·tica con utilidades para validaciones y mensajes.
+    /// </summary>
     public static class Utils
     {
-        public static bool ValidarDNI(string dni)
-        {
-            if (dni.Length != 8 || !long.TryParse(dni, out _)) return false;
-            char primero = dni[0];
-            foreach (char c in dni)
-                if (c != primero) return true;
-            return false;
-        }
+        // ========== MENSAJES CON COLOR ==========
 
-        public static bool SoloLetras(string texto)
-        {
-            return !string.IsNullOrEmpty(texto) && Regex.IsMatch(texto, @"^[a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—\s]+$");
-        }
-
-        public static string LeerConRegreso(string mensaje)
-        {
-            Console.Write(mensaje);
-            string entrada = Console.ReadLine().Trim();
-            if (entrada.Equals("REGRESAR", StringComparison.OrdinalIgnoreCase))
-                return "REGRESAR";
-            return entrada;
-        }
-
+        /// <summary>Muestra un mensaje de Èxito en color verde.</summary>
         public static void MostrarExito(string mensaje)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -35,6 +18,7 @@ namespace PagaDiarioCelendin
             Console.ResetColor();
         }
 
+        /// <summary>Muestra un mensaje de error en color rojo.</summary>
         public static void MostrarError(string mensaje)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -42,6 +26,7 @@ namespace PagaDiarioCelendin
             Console.ResetColor();
         }
 
+        /// <summary>Muestra un mensaje informativo en color cian.</summary>
         public static void MostrarInfo(string mensaje)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -49,18 +34,72 @@ namespace PagaDiarioCelendin
             Console.ResetColor();
         }
 
+        /// <summary>Muestra un tÌtulo en color amarillo.</summary>
         public static void MostrarTitulo(string titulo)
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"--- {titulo} ---");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(titulo);
             Console.ResetColor();
         }
 
+        /// <summary>Espera que el usuario presione una tecla para continuar.</summary>
         public static void EsperarTecla()
         {
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
+            Console.WriteLine("\nPresione cualquier tecla para volver al men˙...");
             Console.ReadKey();
+        }
+
+        // ========== VALIDACIONES ==========
+
+        /// <summary>Valida que el DNI tenga 8 dÌgitos y NO todos iguales.</summary>
+        public static bool ValidarDNI(string dni)
+        {
+            if (string.IsNullOrEmpty(dni) || dni.Length != Constantes.LONGITUD_DNI)
+                return false;
+            if (!long.TryParse(dni, out _))
+                return false;
+
+            char primero = dni[0];
+            foreach (char c in dni)
+                if (c != primero)
+                    return true;
+            return false; // Todos iguales
+        }
+
+        /// <summary>Valida que el texto contenga solo letras y espacios.</summary>
+        public static bool SoloLetras(string texto)
+        {
+            return !string.IsNullOrEmpty(texto) && Regex.IsMatch(texto, @"^[a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—\s]+$");
+        }
+
+        /// <summary>Valida que el telÈfono tenga exactamente 9 dÌgitos.</summary>
+        public static bool ValidarTelefono(string telefono)
+        {
+            return !string.IsNullOrEmpty(telefono) &&
+                   telefono.Length == Constantes.LONGITUD_TELEFONO &&
+                   long.TryParse(telefono, out _);
+        }
+
+        /// <summary>Valida que un monto sea positivo.</summary>
+        public static bool ValidarMontoPositivo(double monto)
+        {
+            return monto > 0;
+        }
+
+        /// <summary>Valida que un plan de ahorro sea v·lido (20,30,40,50).</summary>
+        public static bool ValidarPlanAhorro(int plan)
+        {
+            return Array.Exists(Constantes.PLANES_AHORRO, p => p == plan);
+        }
+
+        /// <summary>Lee una entrada del usuario con la opciÛn de cancelar con "REGRESAR".</summary>
+        public static string LeerConRegreso(string mensaje)
+        {
+            Console.Write(mensaje);
+            string entrada = Console.ReadLine().Trim();
+            if (entrada.Equals(Constantes.MSJ_REGRESAR, StringComparison.OrdinalIgnoreCase))
+                return Constantes.MSJ_REGRESAR;
+            return entrada;
         }
     }
 }
