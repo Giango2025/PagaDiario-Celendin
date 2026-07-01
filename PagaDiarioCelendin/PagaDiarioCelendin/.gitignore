@@ -19,3 +19,5 @@ obj/
 # Archivos de Copilot
 CopilotIndices/
 FileContentIndex/
+.vs/
+.github/
