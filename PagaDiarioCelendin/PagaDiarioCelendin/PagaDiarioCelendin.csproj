@@ -51,6 +51,8 @@
 		<Compile Include="ArchivoService.cs" />
 		<Compile Include="NegocioService.cs" />
 		<Compile Include="ReporteService.cs" />
+		<Compile Include="Utils.cs" />
+		<!-- Añadir esta línea -->
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>

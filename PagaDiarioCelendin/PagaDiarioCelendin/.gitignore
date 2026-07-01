@@ -1,0 +1,21 @@
+# Archivos de Visual Studio
+.vs/
+bin/
+obj/
+*.exe
+*.pdb
+*.user
+*.suo
+*.cache
+*.tmp
+*.log
+*.pid
+*.seed
+
+# Archivos de datos (opcional - quita estas lineas si quieres subir los .txt y .bin)
+*.txt
+*.bin
+
+# Archivos de Copilot
+CopilotIndices/
+FileContentIndex/
