@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace PagaDiarioCelendin
 {
@@ -10,6 +11,7 @@ namespace PagaDiarioCelendin
     /// </summary>
     public static class ArchivoService
     {
+        // Nombres de archivos (se guardan en la carpeta bin/Debug)
         private static readonly string archClientesTxt = "clientes.txt";
         private static readonly string archPrestamosTxt = "prestamos.txt";
         private static readonly string archAhorrosTxt = "ahorros.txt";
@@ -20,12 +22,15 @@ namespace PagaDiarioCelendin
         private static readonly string archAhorrosBin = "ahorros.bin";
         private static readonly string archPagosBin = "pagos.bin";
 
+        // Listas en memoria
         public static List<Cliente> ListaClientes { get; private set; } = new List<Cliente>();
         public static List<Prestamo> ListaPrestamos { get; private set; } = new List<Prestamo>();
         public static List<Ahorro> ListaAhorros { get; private set; } = new List<Ahorro>();
         public static List<PagoDiario> ListaPagos { get; private set; } = new List<PagoDiario>();
 
-        /// <summary>Guarda los datos en ambos formatos (texto y binario).</summary>
+        /// <summary>
+        /// Guarda los datos en ambos formatos (texto y binario).
+        /// </summary>
         public static void GuardarDatos()
         {
             GuardarTexto();
@@ -33,6 +38,7 @@ namespace PagaDiarioCelendin
             Utils.MostrarInfo("Datos guardados en formato dual (texto y binario).");
         }
 
+        // ==================== GUARDADO EN TEXTO ====================
         private static void GuardarTexto()
         {
             try
@@ -67,6 +73,7 @@ namespace PagaDiarioCelendin
             }
         }
 
+        // ==================== GUARDADO EN BINARIO ====================
         private static void GuardarBinario()
         {
             try
@@ -91,26 +98,62 @@ namespace PagaDiarioCelendin
             }
         }
 
-        /// <summary>Carga los datos desde archivos (prioriza binarios si existen).</summary>
+        // ==================== CARGA DE DATOS ====================
+        /// <summary>
+        /// Carga los datos desde archivos (prioriza binarios si existen y son válidos).
+        /// Si falla la carga binaria, intenta con texto.
+        /// </summary>
         public static void CargarDatos()
         {
+            // Intentar cargar desde binarios primero
             if (File.Exists(archClientesBin) && File.Exists(archPrestamosBin) &&
                 File.Exists(archAhorrosBin) && File.Exists(archPagosBin))
             {
-                CargarBinario();
-                Utils.MostrarInfo("Datos cargados desde archivos binarios.");
+                try
+                {
+                    CargarBinario();
+                    Utils.MostrarInfo("Datos cargados desde archivos binarios.");
+                    return;
+                }
+                catch (SerializationException)
+                {
+                    Utils.MostrarError("Los archivos binarios están corruptos o desactualizados. Se eliminarán y se cargará desde texto.");
+                    // Eliminar binarios corruptos
+                    try
+                    {
+                        if (File.Exists(archClientesBin)) File.Delete(archClientesBin);
+                        if (File.Exists(archPrestamosBin)) File.Delete(archPrestamosBin);
+                        if (File.Exists(archAhorrosBin)) File.Delete(archAhorrosBin);
+                        if (File.Exists(archPagosBin)) File.Delete(archPagosBin);
+                        Utils.MostrarInfo("Archivos binarios corruptos eliminados.");
+                    }
+                    catch { /* ignorar errores de eliminación */ }
+                }
+                catch (Exception ex)
+                {
+                    Utils.MostrarError($"Error al cargar binarios: {ex.Message}. Intentando con texto...");
+                }
             }
-            else
+
+            // Si no hay binarios o fallaron, cargar desde texto
+            if (File.Exists(archClientesTxt) && File.Exists(archPrestamosTxt) &&
+                File.Exists(archAhorrosTxt) && File.Exists(archPagosTxt))
             {
                 CargarTexto();
                 Utils.MostrarInfo("Datos cargados desde archivos de texto.");
             }
+            else
+            {
+                Utils.MostrarInfo("No se encontraron archivos de datos. Se iniciará con listas vacías.");
+            }
         }
 
+        // ==================== CARGA DESDE TEXTO ====================
         private static void CargarTexto()
         {
             try
             {
+                // Clientes
                 if (File.Exists(archClientesTxt))
                 {
                     ListaClientes.Clear();
@@ -130,6 +173,7 @@ namespace PagaDiarioCelendin
                     }
                 }
 
+                // Préstamos
                 if (File.Exists(archPrestamosTxt))
                 {
                     ListaPrestamos.Clear();
@@ -146,6 +190,7 @@ namespace PagaDiarioCelendin
                     }
                 }
 
+                // Ahorros
                 if (File.Exists(archAhorrosTxt))
                 {
                     ListaAhorros.Clear();
@@ -166,6 +211,7 @@ namespace PagaDiarioCelendin
                     }
                 }
 
+                // Pagos
                 if (File.Exists(archPagosTxt))
                 {
                     ListaPagos.Clear();
@@ -194,36 +240,22 @@ namespace PagaDiarioCelendin
             }
         }
 
+        // ==================== CARGA DESDE BINARIO ====================
         private static void CargarBinario()
         {
-            try
-            {
-                var bf = new BinaryFormatter();
-                if (File.Exists(archClientesBin))
-                    using (var fs = new FileStream(archClientesBin, FileMode.Open))
-                        ListaClientes = (List<Cliente>)bf.Deserialize(fs);
-                if (File.Exists(archPrestamosBin))
-                    using (var fs = new FileStream(archPrestamosBin, FileMode.Open))
-                        ListaPrestamos = (List<Prestamo>)bf.Deserialize(fs);
-                if (File.Exists(archAhorrosBin))
-                    using (var fs = new FileStream(archAhorrosBin, FileMode.Open))
-                        ListaAhorros = (List<Ahorro>)bf.Deserialize(fs);
-                if (File.Exists(archPagosBin))
-                    using (var fs = new FileStream(archPagosBin, FileMode.Open))
-                        ListaPagos = (List<PagoDiario>)bf.Deserialize(fs);
-            }
-            catch (FileNotFoundException ex)
-            {
-                Utils.MostrarInfo($"Archivo binario no encontrado: {ex.Message}");
-            }
-            catch (IOException ex)
-            {
-                Utils.MostrarError($"Error al leer archivos binarios: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Utils.MostrarError($"Error inesperado al cargar binario: {ex.Message}");
-            }
+            var bf = new BinaryFormatter();
+            if (File.Exists(archClientesBin))
+                using (var fs = new FileStream(archClientesBin, FileMode.Open))
+                    ListaClientes = (List<Cliente>)bf.Deserialize(fs);
+            if (File.Exists(archPrestamosBin))
+                using (var fs = new FileStream(archPrestamosBin, FileMode.Open))
+                    ListaPrestamos = (List<Prestamo>)bf.Deserialize(fs);
+            if (File.Exists(archAhorrosBin))
+                using (var fs = new FileStream(archAhorrosBin, FileMode.Open))
+                    ListaAhorros = (List<Ahorro>)bf.Deserialize(fs);
+            if (File.Exists(archPagosBin))
+                using (var fs = new FileStream(archPagosBin, FileMode.Open))
+                    ListaPagos = (List<PagoDiario>)bf.Deserialize(fs);
         }
     }
 }
